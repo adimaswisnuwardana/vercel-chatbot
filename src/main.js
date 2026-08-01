@@ -619,9 +619,12 @@ async function sendMessage() {
     timestamp: Date.now(),
   })
 
-  // Show typing indicator
+  // Show typing indicator inside the AI bubble
   state.isStreaming = true
-  dom.typingIndicator.style.display = 'flex'
+  const typingBubble = getLastAIMessageEl()
+  if (typingBubble) {
+    typingBubble.innerHTML = '<span class="bubble-typing"><i class="fas fa-circle-notch fa-spin"></i> AI is thinking...</span>'
+  }
   dom.messageInput.disabled = true
 
   try {
@@ -691,7 +694,9 @@ async function sendMessage() {
     updateLastAIMessage(aiMessage.content)
   } finally {
     state.isStreaming = false
-    dom.typingIndicator.style.display = 'none'
+    // Remove typing indicator from the AI bubble
+    const typingEl = dom.messages.querySelector('.bubble-typing')
+    if (typingEl) typingEl.parentElement.innerHTML = ''
     dom.messageInput.disabled = false
     dom.messageInput.focus()
 
