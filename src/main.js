@@ -755,7 +755,8 @@ function initEventListeners() {
   })
 
   // Sidebar toggle
-  dom.sidebarToggle.addEventListener('click', () => {
+  dom.sidebarToggle.addEventListener('click', (e) => {
+    e.stopPropagation()
     state.sidebarOpen = !state.sidebarOpen
     dom.sidebar.classList.toggle('open', state.sidebarOpen)
   })
@@ -774,7 +775,7 @@ function initEventListeners() {
   })
 
   // Close sidebar when clicking outside on mobile
-  document.addEventListener('click', (e) => {
+  document.addEventListener('pointerdown', (e) => {
     if (window.innerWidth <= 768 && state.sidebarOpen) {
       const isSidebar = dom.sidebar.contains(e.target)
       const isToggle = dom.sidebarToggle.contains(e.target)
